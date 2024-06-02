@@ -1,65 +1,90 @@
-{% extends "layout.html" %}}
+{% extends "layout.html" %}
+
+{% load static %}  <!-- 加载静态文件 -->
 
 {% block content %}
-    <div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-7 col-sm-4" >
-            <a class="btn btn-success" style="margin: 10px" href="/user/add" target="_blank"> {# blank表示在新页面打开#}
-                <i class="bi bi-plus-circle-fill"></i>
-                添加用户
-            </a>
-            </div>
-            <div class="col-md-5 col-sm-8 ">
-                <form method="get">
-                <div class="d-flex flex-row">
-                    <input class="form-control me-2" type="search" name="q" value="{{ search_data }}" style="margin: 10px" placeholder="搜索" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit" style="margin: 10px; width: 100px"><strong>搜索</strong></button>
+<style>
+    .container-background {
+        background: url('{% static "img/1.jpg" %}') no-repeat center center fixed;
+        background-size: cover; /* 覆盖整个容器 */
+        position: relative; /* 相对定位，为覆盖层做准备 */
+        height: 100vh; /* 设置背景区域至少覆盖整个视口高度 */
+    }
+    .overlay { /* 覆盖层样式 */
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5); /* 半透明覆盖层 */
+        color: white; /* 文本颜色，确保良好的对比度 */
+    }
+    .content { /* 内容样式，确保内容在覆盖层之上 */
+        position: relative;
+        z-index: 2;
+        padding: 20px; /* 添加一些内边距 */
+    }
+</style>
+<div class="container-background">
+    <div class="overlay"> <!-- 添加覆盖层 -->
+        <div class="container content"> <!-- 内容容器，确保内容可读 -->
+            <div class="row">
+                <div class="col-md-7 col-sm-4">
+                    <a class="btn btn-success" style="margin: 10px" href="/user/add" target="_blank">
+                        <i class="bi bi-plus-circle-fill"></i> 添加角色
+                    </a>
                 </div>
-                </form>
+                <div class="col-md-5 col-sm-8">
+                    <form method="get">
+                        <div class="d-flex flex-row">
+                            <input class="form-control me-2" type="search" name="q" value="{{ search_data }}" style="margin: 10px" placeholder="搜索" aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit" style="margin: 10px; width: 100px"><strong>搜索</strong></button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
-        <ul class="list-group">
-            <li class="list-group-item list-group-item-dark">
-                <i class="bi bi-calendar2-event-fill"></i>
-                <strong>用户列表</strong>
-            </li>
-            <li class="list-group-item">
-                <table class="table">
-                      <thead>
-                        <tr>
-                          <th scope="col">ID</th>
-                          <th scope="col">姓名</th>
-                            <th scope="col">性别</th>
-                            <th scope="col">年龄</th>
-                          <th scope="col">账户余额</th>
-                            <th scope="col">加入日期</th>
-                          <th scope="col">所属部门</th>
-                          <th scope="col">操作</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      {% for obj in queryset %}
-                        <tr>
-                          <th scope="row">{{ obj.user_id }}</th>
-                            <td>{{ obj.name}}</td>
-                            <td>{{ obj.get_gender_display}}</td>
-                            <td>{{ obj.age}}</td>
-                            <td>{{ obj.account}}</td>
-                            <td>{{ obj.creat_time}}</td>
-                            <td>{{ obj.department.title}}</td>
-                          <td>
-                              <a class="btn btn-primary btn-sm" href="/user/{{ obj.user_id }}/edit">编辑</a>
-                              <a class="btn btn-danger btn-sm" href="/user/delete/?nid={{ obj.user_id }}">删除</a>
-                          </td>
-                        </tr>
-                      {% endfor %}
-                      </tbody>
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-dark">
+                    <i class="bi bi-calendar2-event-fill"></i>
+                    <strong>角色列表</strong>
+                </li>
+                <li class="list-group-item">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">角色ID</th>
+                                <th scope="col">昵称</th>
+                                <th scope="col">性别</th>
+                                <th scope="col">等级</th>
+                                <th scope="col">获取摩拉</th>
+                                <th scope="col">加入日期</th>
+                                <th scope="col">委托地区</th>
+                                <th scope="col">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for obj in queryset %}
+                            <tr>
+                                <th scope="row">{{ obj.user_id }}</th>
+                                <td>{{ obj.name }}</td>
+                                <td>{{ obj.get_gender_display }}</td>
+                                <td>{{ obj.age }}</td>
+                                <td>{{ obj.account }}</td>
+                                <td>{{ obj.creat_time }}</td>
+                                <td>{{ obj.department.title }}</td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm" href="/user/{{ obj.user_id }}/edit">编辑</a>
+                                    <a class="btn btn-danger btn-sm" href="/user/delete/?nid={{ obj.user_id }}">删除</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
                     </table>
-            </li>
-        </ul>
-        <div style="display: flex; justify-content: center;"> {# 居中 #}
-                    {{ page_nav_string }}
+                </li>
+            </ul>
+            <div style="display: flex; justify-content: center;">
+                {{ page_nav_string }}
+            </div>
         </div>
     </div>
 </div>

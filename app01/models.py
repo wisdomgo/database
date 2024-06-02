@@ -14,14 +14,14 @@ class Department(models.Model):
 
 class UserInfo(models.Model):
     """用户表"""
-    user_id = models.CharField(verbose_name="用户账号", primary_key=True, max_length=30)
+    user_id = models.CharField(verbose_name="角色账号", primary_key=True, max_length=30)
     name = models.CharField(verbose_name="姓名", max_length=30, null=True, blank=True, default="")
-    password = models.CharField(verbose_name="密码", max_length=64, null=True, blank=True, default="")
-    age = models.IntegerField(verbose_name="年龄", null=True, blank=True, default=18)
-    account = models.DecimalField(verbose_name="账户余额", decimal_places=2, max_digits=10, null=True, blank=True,
+    password = models.CharField(verbose_name="角色编码", max_length=64, null=True, blank=True, default="")
+    age = models.IntegerField(verbose_name="等级", null=True, blank=True, default=18)
+    account = models.DecimalField(verbose_name="摩拉余额", decimal_places=2, max_digits=10, null=True, blank=True,
                                   default=0.0)
     # obj.creat_time.strftime("%Y-%m-%d")
-    creat_time = models.DateTimeField(verbose_name="入职时间", null=True, blank=True, default=datetime.datetime.now())
+    creat_time = models.DateTimeField(verbose_name="加入日期", null=True, blank=True, default=datetime.datetime.now())
     # django约束
     gender_choices = ((1, "男"), (2, "女"))
     # obj.get_gender_display()获取男女
@@ -29,7 +29,7 @@ class UserInfo(models.Model):
     # 数据库外键约束
     # Department.user_set()即可获取部门的所有员工
     department = models.ForeignKey(to="Department", to_field="department_id", related_name="user_set",
-                                   verbose_name="所属部门", null=True, blank=True, on_delete=models.SET_NULL)
+                                   verbose_name="委托地区", null=True, blank=True, on_delete=models.SET_NULL)
 
     # on_delete=models.CASCADE 级联删除
 
@@ -38,8 +38,8 @@ class UserInfo(models.Model):
 
 
 class PhoneNumbers(models.Model):
-    mobile = models.CharField(verbose_name="手机号", max_length=11, null=True, blank=True)
-    price = models.DecimalField(verbose_name="价格", decimal_places=2, max_digits=10, null=True, blank=True)
+    mobile = models.CharField(verbose_name="UID", max_length=15)
+    price = models.DecimalField(verbose_name="摩拉余额", decimal_places=2, max_digits=12, null=True, blank=True)
     level_choices = (
         (1, "一级"),
         (2, "二级别"),

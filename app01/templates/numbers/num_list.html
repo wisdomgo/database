@@ -1,21 +1,46 @@
 {% extends "layout.html" %}
 
+{% load static %}  <!-- 加载静态文件 -->
+
 {% block content %}
-    <div>
+<style>
+    .container-background {
+        background: url('{% static "img/3.jpg" %}') no-repeat center center fixed;
+        background-size: cover; /* 覆盖整个容器 */
+        position: relative; /* 相对定位，为覆盖层做准备 */
+        height: 100vh; /* 设置背景区域至少覆盖整个视口高度 */
+        color: white; /* 设置文本颜色为白色以增强可读性 */
+    }
+    .overlay { /* 覆盖层样式 */
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5); /* 半透明覆盖层 */
+        z-index: 1; /* 确保覆盖层在背景图片之上 */
+    }
+    .container { /* 调整内容的容器 */
+        position: relative; /* 相对定位，确保内容在覆盖层之上 */
+        z-index: 2; /* 确保内容的层级高于覆盖层 */
+        padding: 20px; /* 增加一些内边距 */
+    }
+</style>
+<div class="container-background">
+    <div class="overlay"></div> <!-- 添加覆盖层 -->
     <div class="container">
         <div class="row">
-            <div class="col-md-7 col-sm-4" >
-            <a class="btn btn-success" style="margin: 10px" href="/numbers/add" target="_blank"> {# blank表示在新页面打开#}
-                <i class="bi bi-plus-circle-fill"></i>
-                新建号码
-            </a>
+            <div class="col-md-7 col-sm-4">
+                <a class="btn btn-success" style="margin: 10px" href="/numbers/add" target="_blank">
+                    <i class="bi bi-plus-circle-fill"></i> 新建账号
+                </a>
             </div>
-            <div class="col-md-5 col-sm-8 ">
+            <div class="col-md-5 col-sm-8">
                 <form method="get">
-                <div class="d-flex flex-row">
-                    <input class="form-control me-2" type="search" name="q" value="{{ search_data }}" style="margin: 10px" placeholder="搜索" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit" style="margin: 10px; width: 100px"><strong>搜索</strong></button>
-                </div>
+                    <div class="d-flex flex-row">
+                        <input class="form-control me-2" type="search" name="q" value="{{ search_data }}" style="margin: 10px" placeholder="搜索" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit" style="margin: 10px; width: 100px"><strong>搜索</strong></button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -23,39 +48,39 @@
         <ul class="list-group">
             <li class="list-group-item list-group-item-dark">
                 <i class="bi bi-calendar2-event-fill"></i>
-                <strong>号码列表</strong>
+                <strong>账号列表</strong>
             </li>
             <li class="list-group-item">
                 <table class="table">
-                      <thead>
+                    <thead>
                         <tr>
                           <th scope="col">ID</th>
-                          <th scope="col">号码</th>
-                            <th scope="col">价格</th>
-                            <th scope="col">级别</th>
+                          <th scope="col">UID</th>
+                          <th scope="col">摩拉余额</th>
+                          <th scope="col">级别</th>
                           <th scope="col">状态</th>
+                          <th scope="col">操作</th>
                         </tr>
-                      </thead>
-                      <tbody>
-                      {% for obj in queryset %}
+                    </thead>
+                    <tbody>
+                        {% for obj in queryset %}
                         <tr>
-                          <th scope="row">{{ obj.id }}</th>
-                            <td>{{ obj.mobile}}</td>
-                            <td>{{ obj.price}}</td>
-                            <td>{{ obj.get_level_display}}</td>
-                            <td>{{ obj.get_status_display}}</td>
-
-                          <td>
-                              <a class="btn btn-primary btn-sm" href="/numbers/{{ obj.id }}/edit">编辑</a>
-                              <a class="btn btn-danger btn-sm" href="/numbers/delete/?nid={{ obj.id }}">删除</a>
-                          </td>
+                            <th scope="row">{{ obj.id }}</th>
+                            <td>{{ obj.mobile }}</td>
+                            <td>{{ obj.price }}</td>
+                            <td>{{ obj.get_level_display }}</td>
+                            <td>{{ obj.get_status_display }}</td>
+                            <td>
+                                <a class="btn btn-primary btn-sm" href="/numbers/{{ obj.id }}/edit">编辑</a>
+                                <a class="btn btn-danger btn-sm" href="/numbers/delete/?nid={{ obj.id }}">删除</a>
+                            </td>
                         </tr>
-                      {% endfor %}
-                      </tbody>
-                    </table>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </li>
         </ul>
-        <div style="display: flex; justify-content: center;"> {# 居中 #}
+        <div style="display: flex; justify-content: center;"> <!-- 居中 -->
             <nav aria-label="Page navigation example" style="margin: 10px">
                 <ul class="pagination">
                     {{ page_nav_string }}
@@ -63,5 +88,5 @@
             </nav>
         </div>
     </div>
-    </div>
+</div>
 {% endblock %}

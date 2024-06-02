@@ -27,7 +27,7 @@ SECRET_KEY = "django-insecure-v%!4gxl!w+%53%8rgc!1mp9+$37mbc6a!qr-y$u2%^k^f_&i%&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.131.198.159']
 
 
 # Application definition
@@ -92,10 +92,10 @@ WSGI_APPLICATION = "Learntest.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'yourdatabase',
-        'USER': 'user',
-        'PASSWORD': 'password',
-        'HOST': 'yourhost',
+        'NAME': 'genshen',
+        'USER': 'test',
+        'PASSWORD': '123456',
+        'HOST': '172.30.151.188',
         'PORT': '3306',
     }
 }

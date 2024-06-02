@@ -37,10 +37,8 @@ class NumModelForm(BootstrapModelForm):
         # 以下两条会报错
         # id = self.cleaned_data["price"]
         # id = self.cleaned_data["id"]
-        if len(txt_mobile) != 11:
-            raise ValidationError("格式错误")
         if PhoneNumbers.objects.filter(mobile=txt_mobile).exists():
-            raise ValidationError("手机号已经存在")
+            raise ValidationError("UID已经存在")
         return txt_mobile
 
     # 验证方式4
@@ -50,8 +48,8 @@ class NumModelForm(BootstrapModelForm):
 
 class NumModelFormEdit(BootstrapModelForm):
     mobile = forms.CharField(disabled=True,  # disable输入框，使得不能编辑
-                             label="手机号",
-                             widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "手机号"}))
+                             label="UID号",
+                             widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "UID号"}))
 
     class Meta:
         model = PhoneNumbers  # 这里必须是model字母，不能错
@@ -64,11 +62,9 @@ class NumModelFormEdit(BootstrapModelForm):
         # 以下两条会报错
         # id = self.cleaned_data["price"]
         # id = self.cleaned_data["id"]
-        if len(txt_mobile) != 11:
-            raise ValidationError("格式错误")
         # 编辑时排除自身
         if PhoneNumbers.objects.filter(mobile=txt_mobile).exclude(id=id).exists():
-            raise ValidationError("手机号已经存在")
+            raise ValidationError("UID号已经存在")
         return txt_mobile
 
 
@@ -76,13 +72,13 @@ class NumModelFormEdit(BootstrapModelForm):
 
 
 class MyadminForm(BootstrapModelForm):
-    user_name = forms.CharField(required=True, label="管理员姓名",
+    user_name = forms.CharField(required=True, label="旅行者姓名",
                                 widget=forms.TextInput(attrs={"class": "form-control"}))
     password = forms.CharField(required=True, label="输入密码", min_length=8,
                                widget=forms.PasswordInput(attrs={"class": "form-control"}))
     confirm_pwd = forms.CharField(required=True, label="确认密码", min_length=8,
                                   widget=forms.PasswordInput(attrs={"class": "form-control"}))
-    is_superadmin = forms.BooleanField(required=True, label="是否是超级管理员",
+    is_superadmin = forms.BooleanField(required=True, label="是否是负责人",
                                        widget=forms.PasswordInput(attrs={"class": "form-control"}))
 
     class Meta:

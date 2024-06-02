@@ -14,6 +14,8 @@ class TaskModelForm(BootstrapModelForm):
 
 
 def task_list(request):
+    print("1")
+    print(request)
     queryset = models.Task.objects.all().order_by("-id")
     page_nav_obj = PageNav(request, queryset)
     page_queryset = page_nav_obj.page_queryset
@@ -39,7 +41,7 @@ def task_ajax(request):
 
 @csrf_exempt  # 免除csrf_token认证，就可发post
 def task_add(request):
-    # print(request.POST)
+    print(1)
     form = TaskModelForm(data=request.POST)
     if form.is_valid():
         form.save()
@@ -63,4 +65,5 @@ def task_add(request):
 def task_delete(req):
     nid = req.GET.get("nid")
     Task.objects.filter(id=nid).delete()
-    return redirect("/tasks/list")
+    return redirect("/task/list")
+

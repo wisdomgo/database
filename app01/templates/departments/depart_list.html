@@ -1,25 +1,51 @@
 {% extends "layout.html" %}
 
+{% load static %}  <!-- 加载静态文件 -->
+
 {% block content %}
-<div>
-    <div class="container">
+<style>
+    .container-background {
+        background: url('{% static "img/4.jpg" %}') no-repeat center center fixed;
+        background-size: cover; /* 覆盖整个容器 */
+        position: relative; /* 相对定位，为覆盖层做准备 */
+        height: 100vh; /* 设置背景区域至少覆盖整个视口高度 */
+        color: white; /* 设置文本颜色为白色以增强可读性 */
+    }
+    .overlay { /* 覆盖层样式 */
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5); /* 半透明覆盖层 */
+        z-index: 1; /* 确保覆盖层在背景图片之上 */
+    }
+    .content { /* 调整内容的容器 */
+        position: relative; /* 相对定位，确保内容在覆盖层之上 */
+        z-index: 2; /* 确保内容的层级高于覆盖层 */
+        padding: 20px; /* 增加一些内边距 */
+    }
+</style>
+<div class="container-background">
+    <div class="overlay"></div> <!-- 添加覆盖层 -->
+    <div class="container content">
         <div style="margin: 10px">
             <a class="btn btn-success" href="/depart/add" target="_blank"> {# blank表示在新页面打开#}
                 <i class="bi bi-plus-circle-fill"></i>
-                添加部门
+                地区国度
             </a>
         </div>
         <ul class="list-group">
             <li class="list-group-item list-group-item-dark">
                 <i class="bi bi-calendar2-event-fill"></i>
-                <strong>部门列表</strong>
+                <strong>地区列表</strong>
             </li>
             <li class="list-group-item">
                 <table class="table">
                       <thead>
                         <tr>
                           <th scope="col">ID</th>
-                          <th scope="col">名称</th>
+                          <th scope="col">地区名称</th>
                           <th scope="col">操作</th>
                         </tr>
                       </thead>
@@ -27,7 +53,7 @@
                       {% for obj in queryset %}
                         <tr>
                           <th scope="row">{{ obj.department_id }}</th>
-                          <td>{{ obj.title}}</td>
+                          <td>{{ obj.title }}</td>
                           <td>
                               <a class="btn btn-primary btn-sm" href="/depart/{{ obj.department_id }}/edit">编辑</a>
                               <a class="btn btn-danger btn-sm" href="/depart/delete/?nid={{ obj.department_id }}">删除</a>
@@ -39,6 +65,5 @@
             </li>
         </ul>
     </div>
-
 </div>
 {% endblock %}
